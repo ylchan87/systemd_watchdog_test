@@ -2,15 +2,15 @@
 
 systemd would restart service if the service crashes, but sometimes the service do not crash but hangs, and the service is not restarted.
 
-We can setup a watchdog and call systemd's `Notify` function to notify systemd of our servives health. systemd would auto restart the service if these health notification is missing for too long.
+We can setup a watchdog and call systemd's `Notify` function to notify systemd of our service's health. systemd would auto restart the service if these health notification is missing for too long.
 
 
 # File descriptions
-- buggy_server.py : a server that hangs randomly
+- `buggy_server.py` : a server that hangs randomly
 
-- buggy_server.service : our service
+- `buggy_server.service` : our systemd service
 
-- run_buggy_server.bash : script to start the server and the watchdog, we use curl to check if the server is still healthy, if healthy, send a msg to systemd
+- `run_buggy_server.bash` : script to start the server and the watchdog, we use curl to check if the server is still healthy, if healthy, send a msg to systemd
 
 # Install and test
 
@@ -42,7 +42,7 @@ By default only the process itself, i.e. the python server, can notify systemd a
 
 
 - `WatchdogSec=5`\
-systemd will restart the service if no new notification within 5sec
+systemd will restart the service if it receives no new notification within 5sec
 
 ## about watchdog
 watchdog is defined in `run_buggy_server.bash`
@@ -50,7 +50,7 @@ watchdog is defined in `run_buggy_server.bash`
 two key things to note:
 - `/bin/systemd-notify --ready;` : notify systemd out server is now up and running, else systemd will think the server is still initializing
             
-- `/bin/systemd-notify WATCHDOG=1;` : notify systemd out server is still healthy, don't kill it yet.
+- `/bin/systemd-notify WATCHDOG=1;` : notify systemd that out server is still healthy, don't kill it yet.
 
 # Ref
 
