@@ -1,0 +1,15 @@
+[Unit]
+Description=Buggy Server Watchdog Test
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=notify
+NotifyAccess=all
+ExecStart=@PROJECT_ROOT@/run_buggy_server.bash
+Restart=always
+TimeoutSec=5
+WatchdogSec=5
+
+[Install]
+WantedBy=multi-user.target
